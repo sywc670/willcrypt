@@ -3,11 +3,13 @@ package gowalk
 import (
 	"os"
 	"path/filepath"
+	"sync"
 )
 
 type WalkFunc func(filename string, args ...any)
 
-func Walk(filename string, walkFn WalkFunc, args ...any) {
+func Walk(filename string, wg *sync.WaitGroup, walkFn WalkFunc, args ...any) {
+	defer wg.Done()
 
 	fileinfo, err := os.Stat(filename)
 	if err != nil {
@@ -22,10 +24,11 @@ func Walk(filename string, walkFn WalkFunc, args ...any) {
 
 		for _, entry := range entries {
 			subpath := filepath.Join(filename, entry.Name())
-			Walk(subpath, walkFn, args)
+			wg.Add(1)
+			go Walk(subpath, wg, walkFn, args)
 		}
 		return
 	}
-
-	walkFn(filename, args)
+	wg.Add(1)
+	go walkFn(filename, args)
 }

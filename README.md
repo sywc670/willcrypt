@@ -6,4 +6,4 @@ implement variant of [cry](https://github.com/wille/cry)
 
 ### Future improvement point:
 
-- concurrent scan
+- store key locally, add an option
