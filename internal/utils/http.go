@@ -12,7 +12,6 @@ import (
 func PostKey(priv *rsa.PrivateKey, id string) error {
 	key := Stringify(priv)
 
-	// MORE: tls
 	_, err := http.PostForm(config.UploadEndpoint, url.Values{
 		"key": {key},
 		"id":  {id},

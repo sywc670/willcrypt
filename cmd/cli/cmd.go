@@ -75,7 +75,10 @@ func main() {
 		debugf("id: %s\n", id)
 		debugf("private key: %s\n", utils.Stringify(priv))
 
-		utils.PostKey(priv, id)
+		err := utils.PostKey(priv, id)
+		if err != nil {
+			panic(err)
+		}
 
 		data := "# Do not modify this file, it contains your ID matching the encryption key\r\n" + id
 

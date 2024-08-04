@@ -6,4 +6,6 @@ implement variant of [cry](https://github.com/wille/cry)
 
 ### Future improvement point:
 
-- store key locally, add an option
+- tls
+- graceful shutdown
+- key delete
