@@ -56,12 +56,12 @@ func main() {
 	startDir := TargetDir
 
 	encryptionOrDecryption := func(filepath string, isEncrypted bool) {
-		if shouldEncrypt && !isEncrypted {
-			debug("Use encryption")
-			wcrypt.Encrypt(filepath, priv)
-		} else {
-			debug("Use decryption")
+		if isEncrypted {
+			debug(filepath, "use decryption")
 			wcrypt.Decrypt(filepath, priv)
+		} else {
+			debug(filepath, "use encryption")
+			wcrypt.Encrypt(filepath, priv)
 		}
 	}
 

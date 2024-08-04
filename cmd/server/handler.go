@@ -40,7 +40,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	Pairs = append(Pairs, pair)
 
 	// store pair into file
-	file, err := os.OpenFile(StoreFile, os.O_APPEND|os.O_CREATE, 0775)
+	file, err := os.OpenFile(StoreFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)
 	if err != nil {
 		log.Println("open store file err:", err)
 		w.WriteHeader(http.StatusInternalServerError)
