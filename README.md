@@ -6,9 +6,10 @@ implement variant of [cry](https://github.com/wille/cry)
 
 ### usage
 
+gen id.txt which is used to query server for key.
+
 ```sh
 wcrypt-server
-#gen id.txt and pairs.txt
 
 wcrypt-cli -d dir
 ```
@@ -18,3 +19,4 @@ wcrypt-cli -d dir
 - tls
 - graceful shutdown
 - key delete
+- dir encrypt
