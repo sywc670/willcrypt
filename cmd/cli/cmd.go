@@ -12,8 +12,6 @@ import (
 	"github.com/sywc670/willcrypt/internal/utils"
 )
 
-// FIX: mode local decode no effect。
-
 func init() {
 	pflag.StringVar(&c.TargetDir, "dir", "testground", "default testground")
 	pflag.BoolVarP(&c.Debug, "debug", "v", false, "")
