@@ -2,21 +2,14 @@
 
 encrypt files fast and secure
 
-implement variant of [cry](https://github.com/wille/cry)
+based on [cry](https://github.com/wille/cry)
 
 ### usage
 
-gen id.txt which is used to query server for key.
+mode genlocal: first use，gen priv key to encrypt file and store key locally.
 
-```sh
-wcrypt-server
+mode local: use local key to encrypt or decrypt, don't update key.
 
-wcrypt-cli -d dir
-```
+mode remote: use remote key to encrypt or decrypt, don't update key.
 
-### Future improvement point:
-
-- tls
-- graceful shutdown
-- key delete
-- dir encrypt
+mode genremote: first use，gen priv key to encrypt file and store key remotely.

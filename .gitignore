@@ -1,2 +1,4 @@
 .vscode/
-testground/
+testground*
+bin
+priv.key
