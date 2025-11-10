@@ -2,7 +2,7 @@
 
 encrypt files fast and secure.
 
-based on [cry](https://github.com/wille/cry)
+based on [cry](https://github.com/wille/cry), add local function.
 
 ### usage
 
