@@ -2,3 +2,7 @@
 testground*
 bin
 priv.key
+wcrypt*
+config.yml
+id.txt
+pairs.txt

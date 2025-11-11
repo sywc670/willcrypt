@@ -50,4 +50,7 @@ const (
 	UploadEndpoint = "http://localhost:8080/upload"
 
 	RetrieveEndpoint = "http://localhost:8080/retrieve"
+
+	TCPEndpoint = "http://localhost:8080/retrieve"
+	// TODO: use viper.
 )

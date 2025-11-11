@@ -26,12 +26,12 @@ func walk(startDir string, wg *sync.WaitGroup, fn func(string, bool)) {
 			}
 		}
 
-		if !c.IsDecode && isEncrypted {
+		if !cfg.Decode && isEncrypted {
 			debugf("%s already locked, can't encode anymore.\n", filePath)
 			return
 		}
 
-		if c.IsDecode && !isEncrypted {
+		if cfg.Decode && !isEncrypted {
 			debugf("%s not locked, can't decode anymore.\n", filePath)
 			return
 		}
