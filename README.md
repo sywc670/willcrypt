@@ -1,6 +1,6 @@
 ### Info
 
-Encrypt files fast and secure.
+Encrypt files fast and secure. Support linux and windows.
 
 Based on [cry](https://github.com/wille/cry), with more function.
 

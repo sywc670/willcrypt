@@ -71,6 +71,7 @@ func readKeyFromFile() (key string, err error) {
 func storeOrUpload(priv *rsa.PrivateKey) {
 	switch cfg.Mode {
 	case ModeGenLocal:
+		// TODO: Add overwrite check.
 		file, err := os.OpenFile(cfg.KeyPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)
 		if err != nil {
 			panic(err)
