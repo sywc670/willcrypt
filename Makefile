@@ -5,17 +5,17 @@ default: build
 .PHONY: build
 build: clean vet
 	@echo "Building wcrypt-cli..."
-	cd cli/ && $(BUILD) -o ../wcrypt.exe
+	cd cli/ && $(BUILD) -o ../wcrypt
 	@echo "Building wcrypt-server..."
-	cd server/ && $(BUILD) -o ../wcrypt-server.exe
+	cd server/ && $(BUILD) -o ../wcrypt-server
 
 .PHONY: clean
 clean:
-	@rm -rf bin/ wcrypt.exe wcrypt-server.exe
+	@rm -rf bin/ wcrypt.exe wcrypt-server.exe wcrypt wcrypt-server
 
 .PHONY: clean-all
 clean-all:
-	@rm -rf bin/ wcrypt.exe wcrypt-server.exe id.txt pairs.txt priv.key
+	@rm -rf bin/ wcrypt.exe wcrypt-server.exe wcrypt wcrypt-server id.txt pairs.txt priv.key
 
 .PHONY: vet
 vet:

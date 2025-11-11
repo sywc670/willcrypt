@@ -73,6 +73,17 @@ func check() {
 			os.Exit(1)
 		}
 	}
+
+	// check if location exists.
+	_, err := os.Stat(cfg.Location)
+	if err != nil {
+		if os.IsNotExist(err) {
+			fmt.Fprintf(os.Stderr, "%s not exists.\n", cfg.Location)
+			os.Exit(1)
+		} else {
+			panic(err)
+		}
+	}
 }
 
 func main() {
