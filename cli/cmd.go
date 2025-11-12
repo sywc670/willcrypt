@@ -84,6 +84,15 @@ func check() {
 			panic(err)
 		}
 	}
+
+	// if key is found on the keypath, can't use gen mode to avoid overwrite.
+	if cfg.Mode == ModeGenLocal || cfg.Mode == ModeGenRemote {
+		_, err = os.Stat(cfg.KeyPath)
+		if err == nil {
+			fmt.Fprintf(os.Stderr, "%s exists with gen mode set is not ok.\n", cfg.KeyPath)
+			os.Exit(1)
+		}
+	}
 }
 
 func main() {

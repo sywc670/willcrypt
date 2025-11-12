@@ -1,5 +1,7 @@
 package main
 
+import "github.com/sywc670/willcrypt/internal/config"
+
 var cfg *Config
 
 type Config struct {
@@ -10,12 +12,7 @@ type Config struct {
 	Decode       bool
 	SinglePath   string `mapstructure:"single-path"`
 	KeyPath      string `mapstructure:"key-path"`
-	Server       ServerConfig
-}
-
-type ServerConfig struct {
-	Host string
-	Port int
+	Server       config.ServerConfig
 }
 
 type ModeType string

