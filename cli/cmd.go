@@ -16,14 +16,14 @@ import (
 )
 
 func configure() {
-	configFile := pflag.StringP("config", "c", filepath.Join(getwd(), "config.yml"), "")
-	pflag.String("location", "testground", "")
+	configFile := pflag.StringP("config", "c", filepath.Join(getExeLoc(), "config.yml"), "default relative to exe")
+	pflag.String("location", "testground", "relative to workdir")
 	pflag.BoolP("verbose", "v", false, "")
 	pflag.StringP("mode", "m", "genlocal", "")
 	pflag.StringP("single-path", "f", "", "must enable single")
 	pflag.Bool("enable-single", false, "")
 	pflag.BoolP("decode", "d", false, "")
-	pflag.StringP("key-path", "k", filepath.Join(getwd(), "priv.key"), "")
+	pflag.StringP("key-path", "k", filepath.Join(getExeLoc(), "priv.key"), "default relative to exe")
 	pflag.Int("server.port", 8080, "server port")
 	pflag.String("server.host", "localhost", "server host")
 
@@ -34,14 +34,14 @@ func configure() {
 	viper.SetConfigType("yaml")
 
 	if err := viper.ReadInConfig(); err != nil {
-		fmt.Fprintf(os.Stderr, "Read config fail: %v", err)
+		fmt.Fprintf(os.Stderr, "Read config fail: %v\n", err)
 	}
 
 	viper.SetEnvPrefix("wcrypt")
 	viper.AutomaticEnv()
 
 	if err := viper.Unmarshal(&cfg); err != nil {
-		log.Fatalf("Load config fail: %v", err)
+		log.Fatalf("Load config fail: %v\n", err)
 	}
 
 	check()
@@ -49,18 +49,18 @@ func configure() {
 
 func check() {
 	if cfg.EnableSingle && cfg.SinglePath == "" {
-		fmt.Fprintf(os.Stderr, "Args conflict.\n")
+		debugf("Args conflict.\n")
 		os.Exit(1)
 	}
 
 	if cfg.Mode == ModeGenLocal && cfg.Decode {
-		fmt.Fprintf(os.Stderr, "Args conflict.\n")
-		fmt.Printf("Change Mode to %s.\n", ModeLocal)
+		debugf("Args conflict.\n")
+		debugf("Change Mode to %s.\n", ModeLocal)
 		cfg.Mode = ModeLocal
 	}
 
 	if cfg.Mode == ModeGenRemote && cfg.Decode {
-		fmt.Fprintf(os.Stderr, "Args conflict.\n")
+		debugf("Args conflict.\n")
 		os.Exit(1)
 	}
 
@@ -121,10 +121,10 @@ func main() {
 	debug("Done...")
 }
 
-func getwd() string {
-	s, err := os.Getwd()
+func getExeLoc() string {
+	s, err := os.Executable()
 	if err != nil {
 		panic(err)
 	}
-	return s
+	return filepath.Dir(s)
 }

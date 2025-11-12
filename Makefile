@@ -27,7 +27,7 @@ fmt:
 
 .PHONY: all
 all:
-	GOOS=windows GOARCH=amd64 $(BUILD) -o bin/wcrypt.exe cli/*
-	GOOS=windows GOARCH=amd64 $(BUILD) -o bin/wcrypt-server.exe server/*
-	GOOS=linux GOARCH=amd64 $(BUILD) -o bin/wcrypt cli/*
-	GOOS=linux GOARCH=amd64 $(BUILD) -o bin/wcrypt-server server/*
+	GOOS=windows GOARCH=amd64 $(BUILD) -o wcrypt.exe cli/*
+	GOOS=windows GOARCH=amd64 $(BUILD) -o wcrypt-server.exe server/*
+	GOOS=linux GOARCH=amd64 $(BUILD) -o wcrypt cli/*
+	GOOS=linux GOARCH=amd64 $(BUILD) -o wcrypt-server server/*
