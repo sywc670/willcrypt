@@ -2,7 +2,9 @@
 testground*
 bin
 priv.key
-wcrypt*
+wcrypt
+wcrypt.exe
+wcrypt-server*
 config.yml
 id.txt
 pairs.txt
