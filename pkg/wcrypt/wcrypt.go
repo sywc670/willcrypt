@@ -108,7 +108,7 @@ func EncryptBySection(path string, priv *rsa.PrivateKey) (err error) {
 	}
 	stream := cipher.NewCFBEncrypter(block, iv)
 
-	buf := make([]byte, 16*1024*1024) // 16MB buffer
+	buf := make([]byte, 100*1024*1024) // 100MB buffer
 
 	for {
 		n, readErr := in.Read(buf)
@@ -243,7 +243,7 @@ func DecryptBySection(path string, priv *rsa.PrivateKey) (err error) {
 	stream := cipher.NewCFBDecrypter(block, iv)
 
 	// --- 流式解密正文 ---
-	buf := make([]byte, 16*1024*1024) // 16MB buffer
+	buf := make([]byte, 100*1024*1024) // 100MB buffer
 	for {
 		n, readErr := in.Read(buf)
 		if n > 0 {

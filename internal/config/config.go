@@ -23,6 +23,12 @@ var Extensions = [...]string{
 	"go",
 	"mp4",
 	"rar",
+	"mkv",
+	"ts",
+	"avi",
+	"zip",
+	"png",
+	"jepg",
 }
 
 // IgnoreDirs will skip directories that contains the string
