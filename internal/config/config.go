@@ -21,6 +21,8 @@ var Extensions = [...]string{
 	"html",
 	"xml",
 	"go",
+	"mp4",
+	"rar",
 }
 
 // IgnoreDirs will skip directories that contains the string

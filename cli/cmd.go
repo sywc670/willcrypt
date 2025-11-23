@@ -34,7 +34,9 @@ func configure() {
 	viper.SetConfigType("yaml")
 
 	if err := viper.ReadInConfig(); err != nil {
-		fmt.Fprintf(os.Stderr, "Read config fail: %v\n", err)
+		if cfg.Verbose {
+			fmt.Fprintf(os.Stderr, "Read config fail: %v\n", err)
+		}
 	}
 
 	viper.SetEnvPrefix("wcrypt")
@@ -72,6 +74,11 @@ func check() {
 			fmt.Fprintf(os.Stderr, "Can't connect to remote server at %s.\n", addr)
 			os.Exit(1)
 		}
+	}
+
+	// Overwrite loction with args if specified.
+	if len(pflag.Args()) >= 1 {
+		cfg.Location = pflag.Arg(0)
 	}
 
 	// check if location exists.
