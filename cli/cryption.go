@@ -12,10 +12,12 @@ func goWalkCryption(priv *rsa.PrivateKey, wg *sync.WaitGroup) {
 	encryptionOrDecryption := func(filepath string, isEncrypted bool) {
 		if isEncrypted {
 			debug(filepath, " decrypting...")
-			wcrypt.Decrypt(filepath, priv)
+			// wcrypt.Decrypt(filepath, priv)
+			wcrypt.DecryptBySection(filepath, priv)
 		} else if !isEncrypted {
 			debug(filepath, " encrypting...")
-			wcrypt.Encrypt(filepath, priv)
+			// wcrypt.Encrypt(filepath, priv)
+			wcrypt.EncryptBySection(filepath, priv)
 		}
 	}
 	debug("Start Walk")

@@ -18,7 +18,7 @@ import (
 func configure() {
 	configFile := pflag.StringP("config", "c", filepath.Join(getExeLoc(), "config.yml"), "default relative to exe")
 	pflag.String("location", "testground", "relative to workdir")
-	pflag.BoolP("verbose", "v", false, "")
+	verbose := pflag.BoolP("verbose", "v", false, "")
 	pflag.StringP("mode", "m", "genlocal", "")
 	pflag.StringP("single-path", "f", "", "must enable single")
 	pflag.Bool("enable-single", false, "")
@@ -34,7 +34,7 @@ func configure() {
 	viper.SetConfigType("yaml")
 
 	if err := viper.ReadInConfig(); err != nil {
-		if cfg.Verbose {
+		if *verbose {
 			fmt.Fprintf(os.Stderr, "Read config fail: %v\n", err)
 		}
 	}
